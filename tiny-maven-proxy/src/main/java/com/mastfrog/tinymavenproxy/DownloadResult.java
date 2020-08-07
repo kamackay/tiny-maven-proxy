@@ -26,61 +26,61 @@ package com.mastfrog.tinymavenproxy;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
+
 import java.io.File;
 
 /**
- *
  * @author Tim Boudreau
  */
 class DownloadResult {
 
-    final HttpResponseStatus status;
-    ByteBuf buf;
-    HttpHeaders headers;
-    File file;
+  final HttpResponseStatus status;
+  ByteBuf buf;
+  HttpHeaders headers;
+  File file;
 
-    DownloadResult(HttpResponseStatus status, File file, HttpHeaders headers) {
-        this.file = file;
-        this.status = status;
-        this.headers = headers;
-    }
+  DownloadResult(HttpResponseStatus status, File file, HttpHeaders headers) {
+    this.file = file;
+    this.status = status;
+    this.headers = headers;
+  }
 
-    DownloadResult(HttpResponseStatus status, ByteBuf message) {
-        this(status, message, null);
-    }
+  DownloadResult(HttpResponseStatus status, ByteBuf message) {
+    this(status, message, null);
+  }
 
-    DownloadResult(HttpResponseStatus status, ByteBuf buf, HttpHeaders headers) {
-        // This method is currently unused, but if we enhance the server to accept
-        // uploads, we will likely need code a lot like this
-        this.status = status;
-        this.buf = buf;
-        this.headers = headers;
-    }
+  DownloadResult(HttpResponseStatus status, ByteBuf buf, HttpHeaders headers) {
+    // This method is currently unused, but if we enhance the server to accept
+    // uploads, we will likely need code a lot like this
+    this.status = status;
+    this.buf = buf;
+    this.headers = headers;
+  }
 
-    DownloadResult(HttpResponseStatus status) {
-        this.status = status;
-    }
+  DownloadResult(HttpResponseStatus status) {
+    this.status = status;
+  }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder(status.toString());
-        if (file != null) {
-            sb.append(" ").append(file.getPath());
-        }
-        if (headers != null) {
-            sb.append(" ").append(headers);
-        }
-        if (buf != null) {
-            sb.append(" bytes=").append(buf.readableBytes());
-        }
-        return sb.toString();
+  public String toString() {
+    StringBuilder sb = new StringBuilder(status.toString());
+    if (file != null) {
+      sb.append(" ").append(file.getPath());
     }
+    if (headers != null) {
+      sb.append(" ").append(headers);
+    }
+    if (buf != null) {
+      sb.append(" bytes=").append(buf.readableBytes());
+    }
+    return sb.toString();
+  }
 
-    boolean isFile() {
-        return this.file != null;
-    }
+  boolean isFile() {
+    return this.file != null;
+  }
 
-    boolean isFail() {
-        return status.code() > 399 || (buf == null && file == null);
-    }
+  boolean isFail() {
+    return status.code() > 399 || (buf == null && file == null);
+  }
 
 }

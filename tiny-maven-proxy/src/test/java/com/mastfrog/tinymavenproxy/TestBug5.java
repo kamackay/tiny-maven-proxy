@@ -24,16 +24,16 @@
 package com.mastfrog.tinymavenproxy;
 
 import com.mastfrog.settings.Settings;
-import static com.mastfrog.tinymavenproxy.Config.SETTINGS_KEY_INDEX_DIR;
-import static com.mastfrog.tinymavenproxy.Config.SETTINGS_KEY_MIRROR_URLS;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+
+import static com.mastfrog.tinymavenproxy.Config.SETTINGS_KEY_INDEX_DIR;
+import static com.mastfrog.tinymavenproxy.Config.SETTINGS_KEY_MIRROR_URLS;
+import static org.junit.Assert.*;
 
 /**
  * https://github.com/timboudreau/tiny-maven-proxy/issues/5
@@ -42,24 +42,24 @@ import org.junit.Test;
  */
 public class TestBug5 {
 
-    private static final String URL = "http://foo.cloud.engineering.mycompany.com/";
+  private static final String URL = "http://foo.cloud.engineering.mycompany.com/";
 
-    @Test
-    public void ensureManyLabelsInURLHost() throws IOException {
-        String filePath = System.getProperty("java.io.tmpdir") + "/TestBug5";
-        Settings s = Settings.builder()
-                .add(SETTINGS_KEY_MIRROR_URLS, URL)
-                .add(SETTINGS_KEY_INDEX_DIR, filePath)
-                .build();
-        Config config = new Config(s);
-        File exp = new File(filePath).getAbsoluteFile();
-        assertEquals(exp, config.indexDir.getAbsoluteFile());
-        Set<String> urls = new HashSet<>();
-        config.forEach(url -> {
-            System.out.println("URL: " + url);
-            urls.add(url.toString());
-        });
-        assertFalse(urls.isEmpty());
-        assertTrue(urls.contains(URL));
-    }
+  @Test
+  public void ensureManyLabelsInURLHost() throws IOException {
+    String filePath = System.getProperty("java.io.tmpdir") + "/TestBug5";
+    Settings s = Settings.builder()
+        .add(SETTINGS_KEY_MIRROR_URLS, URL)
+        .add(SETTINGS_KEY_INDEX_DIR, filePath)
+        .build();
+    Config config = new Config(s);
+    File exp = new File(filePath).getAbsoluteFile();
+    assertEquals(exp, config.indexDir.getAbsoluteFile());
+    Set<String> urls = new HashSet<>();
+    config.forEach(url -> {
+      System.out.println("URL: " + url);
+      urls.add(url.toString());
+    });
+    assertFalse(urls.isEmpty());
+    assertTrue(urls.contains(URL));
+  }
 }
